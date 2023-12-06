@@ -29,6 +29,9 @@ class Livre
     #[ORM\Column(length: 255)]
     private ?string $imageName = null;
 
+    #[ORM\Column]
+    private ?int $quantite = null;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -78,6 +81,18 @@ class Livre
     public function setImageName(string $imageName): static
     {
         $this->imageName = $imageName;
+
+        return $this;
+    }
+
+    public function getQuantite(): ?int
+    {
+        return $this->quantite;
+    }
+
+    public function setQuantite(int $quantite): static
+    {
+        $this->quantite = $quantite;
 
         return $this;
     }
