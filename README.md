@@ -2,7 +2,7 @@
 
 ##Installation
 
-Clone the project with VSCode terminal using the following command :  
+Clone the project with the terminal using the following command :  
 
 ```
 git clone https://github.com/BborisB/SymfoLivres.git
