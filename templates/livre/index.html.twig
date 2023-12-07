@@ -1,0 +1,38 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Livre index{% endblock %}
+
+{% block body %}
+    <div class="container my-4">
+        <h1>Livre index</h1>
+
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Id</th>
+                    <th>Titre</th>
+                    <th>ImageName</th>
+                    <th>Quantite</th>
+                    <th>actions</th>
+                </tr>
+            </thead>
+            <tbody>
+            {% for livre in livres %}
+                <tr>
+                    <td>{{ livre.id }}</td>
+                    <td>{{ livre.titre }}</td>
+                    <td>{{ livre.imageName }}</td>
+                    <td>{{ livre.quantite }}</td>
+                    <td>
+                        <a href="{{ path('app_livre_show', {'id': livre.id}) }}">show</a>
+                    </td>
+                </tr>
+            {% else %}
+                <tr>
+                    <td colspan="5">Il n'y pas de livre.</td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+{% endblock %}
