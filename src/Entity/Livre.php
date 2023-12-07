@@ -4,6 +4,7 @@ namespace App\Entity;
 
 use App\Repository\LivreRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\HttpFoundation\File\File;
 use Vich\UploaderBundle\Mapping\Annotation as Vich;
 
@@ -16,6 +17,8 @@ class Livre
     private ?int $id = null;
 
     #[ORM\Column(length: 50)]
+    #[Assert\Length(min:3, max:50, minMessage:"Le titre du livre doit avoir {{limit}} caractères minimum.", maxMessage:"Le titre du livre doit avoir {{limit}} caractères maximum.")]
+    #[Assert\NotBlank(message:"Entrez un titre de livre.")]
     private ?string $titre = null;
 
     #[ORM\ManyToOne(inversedBy: 'livres')]

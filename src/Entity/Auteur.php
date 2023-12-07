@@ -6,6 +6,7 @@ use App\Repository\AuteurRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: AuteurRepository::class)]
 class Auteur
@@ -16,9 +17,13 @@ class Auteur
     private ?int $id = null;
 
     #[ORM\Column(length: 50)]
+    #[Assert\Length(min:3, max:50, minMessage:"Entrez un nom de {{limit}} caractères minimum.", maxMessage:"Entrez un nom de {{limit}} caractères maximum.")]
+    #[Assert\NotBlank(message:"Entrez un nom.")]
     private ?string $nom = null;
 
     #[ORM\Column(length: 50)]
+    #[Assert\Length(min:3, max:50, minMessage:"Entrez un prenom de {{limit}} caractères minimum.", maxMessage:"Entrez un prenom de {{limit}} caractères maximum.")]
+    #[Assert\NotBlank(message:"Entrez un prenom.")]
     private ?string $prenom = null;
 
     #[ORM\OneToMany(mappedBy: 'auteur', targetEntity: Livre::class, orphanRemoval: true)]

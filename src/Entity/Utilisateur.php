@@ -7,9 +7,10 @@ use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
+use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: UtilisateurRepository::class)]
-#[UniqueEntity(fields: ['email'], message: 'There is already an account with this email')]
+#[UniqueEntity(fields: ['email'], message: 'Cet email est déjà utilisé.')]
 class Utilisateur implements UserInterface, PasswordAuthenticatedUserInterface
 {
     #[ORM\Id]
@@ -18,6 +19,7 @@ class Utilisateur implements UserInterface, PasswordAuthenticatedUserInterface
     private ?int $id = null;
 
     #[ORM\Column(length: 180, unique: true)]
+    #[Assert\Email(message:"Entrez un mail valide.")]
     private ?string $email = null;
 
     #[ORM\Column]
@@ -30,13 +32,18 @@ class Utilisateur implements UserInterface, PasswordAuthenticatedUserInterface
     private ?string $password = null;
 
     #[ORM\Column(length: 50)]
+    #[Assert\Length(min:3, max:50, minMessage:"Entrez un nom de {{limit}} caractères minimum.", maxMessage:"Entrez un nom de {{limit}} caractères maximum.")]
+    #[Assert\NotBlank(message:"Entrez un nom.")]
     private ?string $nom = null;
 
     #[ORM\Column(length: 50)]
+    #[Assert\Length(min:3, max:50, minMessage:"Entrez un prenom de {{limit}} caractères minimum.", maxMessage:"Entrez un nom de {{limit}} caractères maximum.")]
+    #[Assert\NotBlank(message:"Entrez un prenom.")]
     private ?string $prenom = null;
 
-    #[ORM\Column(type: 'boolean')]
-    private $rgpd = false;
+    #[ORM\Column]
+    #[Assert\IsTrue(message:"Cochez cette case.")]
+    private ?bool $rgpd = null;
 
     public function getId(): ?int
     {
@@ -132,12 +139,12 @@ class Utilisateur implements UserInterface, PasswordAuthenticatedUserInterface
         return $this;
     }
 
-    public function isRgpd(): bool
+    public function isRgpd(): ?bool
     {
         return $this->rgpd;
     }
 
-    public function setIsRgpd(bool $rgpd): static
+    public function setRgpd(bool $rgpd): static
     {
         $this->rgpd = $rgpd;
 
