@@ -2,37 +2,30 @@
 
 {% block title %}Livre index{% endblock %}
 
+{% block stylesheets %}
+    <link rel="stylesheet" href="/assets/css/livreIndex.css">
+{% endblock %}
+
 {% block body %}
     <div class="container my-4">
         <h1>Livre index</h1>
-
-        <table class="table">
-            <thead>
-                <tr>
-                    <th>Id</th>
-                    <th>Titre</th>
-                    <th>ImageName</th>
-                    <th>Quantite</th>
-                    <th>actions</th>
-                </tr>
-            </thead>
-            <tbody>
-            {% for livre in livres %}
-                <tr>
-                    <td>{{ livre.id }}</td>
-                    <td>{{ livre.titre }}</td>
-                    <td>{{ livre.imageName }}</td>
-                    <td>{{ livre.quantite }}</td>
-                    <td>
-                        <a href="{{ path('app_livre_show', {'id': livre.id}) }}">show</a>
-                    </td>
-                </tr>
-            {% else %}
-                <tr>
-                    <td colspan="5">Il n'y pas de livre.</td>
-                </tr>
-            {% endfor %}
-            </tbody>
-        </table>
+        {% for livre in livres %}
+            <a href="{{ path('app_livre_show', {'id': livre.id}) }}" class="img-thumbnail livreCard card mb-3">
+                <div class="row g-0 h-100">
+                    <div class="col-md-4 h-100">
+                        <img src="/assets/images/{{ livre.imageName }}" class="img-thumbnail livreCouverture w-100 h-100" alt="Couverture du livre">
+                    </div>
+                    <div class="col-md-8">
+                        <div class="card-body">
+                            <h5 class="card-title">{{ livre.titre }}</h5>
+                            <p class="card-text">{{livre.resume}}</p>
+                            <p class="card-text text-body-secondary">{{livre.auteur}}</p>
+                        </div>
+                    </div>
+                </div>
+            </a>
+        {% else %}
+            <span>Il n'y pas de livre.</span>
+        {% endfor %}
     </div>
 {% endblock %}

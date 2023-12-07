@@ -1,0 +1,19 @@
+.livreCouverture
+{
+    object-fit: cover;
+    object-position: center;
+}
+
+.livreCard
+{
+    height: auto;
+    text-decoration: none;
+}
+
+@media (min-width: 768px)
+{
+    .livreCard
+    {
+        height: 25vw;
+    }
+}

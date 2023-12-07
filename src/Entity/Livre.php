@@ -3,6 +3,7 @@
 namespace App\Entity;
 
 use App\Repository\LivreRepository;
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\HttpFoundation\File\File;
@@ -34,6 +35,9 @@ class Livre
 
     #[ORM\Column]
     private ?int $quantite = null;
+
+    #[ORM\Column(type: Types::TEXT)]
+    private ?string $resume = null;
 
     public function getId(): ?int
     {
@@ -96,6 +100,18 @@ class Livre
     public function setQuantite(int $quantite): static
     {
         $this->quantite = $quantite;
+
+        return $this;
+    }
+
+    public function getResume(): ?string
+    {
+        return $this->resume;
+    }
+
+    public function setResume(string $resume): static
+    {
+        $this->resume = $resume;
 
         return $this;
     }
