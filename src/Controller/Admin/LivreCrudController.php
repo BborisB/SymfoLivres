@@ -27,8 +27,8 @@ class LivreCrudController extends AbstractCrudController
             AssociationField::new('auteur'),
             AssociationField::new('editeur'),
             ImageField::new('imageName', 'Image de couverture')
-                ->setUploadDir("public/assets/images")
-                ->setBasePath("assets/images")
+                ->setUploadDir("public/assets/images/livres")
+                ->setBasePath("assets/images/livres")
                 ->setRequired($pageName !== Crud::PAGE_EDIT)
                 ->setFormTypeOptions($pageName == Crud::PAGE_EDIT ? ['allow_delete' => false] : []),
             TextareaField::new('resume'),

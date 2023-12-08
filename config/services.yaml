@@ -20,5 +20,11 @@ services:
             - '../src/Entity/'
             - '../src/Kernel.php'
 
+    App\Service\FileUploader:
+        arguments:
+            $pfpDirectory: '%kernel.project_dir%/public/assets/images/utilisateurs'
+    
+    App\Service\ImageResizeService:
+
     # add more service definitions when explicit configuration is needed
     # please note that last definitions always *replace* previous ones

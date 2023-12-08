@@ -45,6 +45,9 @@ class Utilisateur implements UserInterface, PasswordAuthenticatedUserInterface
     #[Assert\IsTrue(message:"Cochez cette case.")]
     private ?bool $rgpd = null;
 
+    #[ORM\Column(length: 255)]
+    private ?string $imageName = null;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -147,6 +150,18 @@ class Utilisateur implements UserInterface, PasswordAuthenticatedUserInterface
     public function setRgpd(bool $rgpd): static
     {
         $this->rgpd = $rgpd;
+
+        return $this;
+    }
+
+    public function getImageName(): ?string
+    {
+        return $this->imageName;
+    }
+
+    public function setImageName(?string $imageName): static
+    {
+        $this->imageName = $imageName;
 
         return $this;
     }

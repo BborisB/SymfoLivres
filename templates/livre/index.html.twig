@@ -12,11 +12,11 @@
             <a href="{{ path('app_livre_show', {'id': livre.id}) }}" class="img-thumbnail livreCard card mb-3">
                 <div class="row g-0 h-100">
                     <div class="col-md-3 h-100">
-                        <img src="/assets/images/{{ livre.imageName }}" class="img-thumbnail livreCouverture w-100 h-100" alt="Couverture du livre">
+                        <img src="/assets/images/livres/{{ livre.imageName }}" class="img-thumbnail livreCouverture w-100 h-100" alt="Couverture du livre">
                     </div>
                     <div class="p-3 d-flex flex-column col-md-9">
                         <div class="card-header img-thumbnail">
-                            <h5 class="card-title">{{ livre.titre }}</h5>
+                            <h3 class="card-title">{{ livre.titre }}</h3>
                         </div>
                         <div class="my-2 card-body">
                             <p class="card-text">{{livre.resume}}</p>
@@ -31,18 +31,5 @@
         {% else %}
             <span>Il n'y pas de livre.</span>
         {% endfor %}
-        <div class="card text-center">
-            <div class="card-header">
-              Featured
-            </div>
-            <div class="card-body">
-              <h5 class="card-title">Special title treatment</h5>
-              <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
-              <a href="#" class="btn btn-primary">Go somewhere</a>
-            </div>
-            <div class="card-footer text-body-secondary">
-              2 days ago
-            </div>
-          </div>
     </div>
 {% endblock %}

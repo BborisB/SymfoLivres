@@ -21,6 +21,6 @@ body
 {
     .livreCard
     {
-        height: 25vw;
+        height: calc(50px + 20vw);
     }
 }
