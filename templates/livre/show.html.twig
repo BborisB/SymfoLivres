@@ -3,30 +3,23 @@
 {% block title %}Livre{% endblock %}
 
 {% block body %}
-    <h1>Livre</h1>
-
-    <table class="table">
-        <tbody>
-            <tr>
-                <th>Id</th>
-                <td>{{ livre.id }}</td>
-            </tr>
-            <tr>
-                <th>Titre</th>
-                <td>{{ livre.titre }}</td>
-            </tr>
-            <tr>
-                <th></th>
-                <td>
-                    <img src="/assets/images/{{ livre.imageName }}" alt="">
-                </td>
-            </tr>
-            <tr>
-                <th>Quantite</th>
-                <td>{{ livre.quantite }}</td>
-            </tr>
-        </tbody>
-    </table>
-
-    <a href="{{ path('app_livre_index') }}">back to list</a>
+    <div class="mx-5 my-4 d-flex flex-column h-100">
+        <h1>Livre</h1>
+        <div class="img-thumbnail card mb-3">
+            <div class="row g-0 h-100">
+                <div class="col-md-4 h-100">
+                    <img src="/assets/images/{{ livre.imageName }}" class="img-thumbnail livreCouverture w-100" alt="Couverture du livre">
+                </div>
+                <div class="col-md-8">
+                    <div class="card-body">
+                        <h5 class="card-title">{{ livre.titre }}</h5>
+                        <p class="card-text">{{livre.resume}}</p>
+                        <p class="card-text text-body-secondary">{{livre.auteur}}</p>
+                        <button>Ajouter à la liste</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <a class="btn btn-outline-secondary" href="{{ path('app_livre_index') }}">Retour à la liste des livres</a>
+    </div>
 {% endblock %}
