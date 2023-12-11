@@ -1,10 +1,11 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Hello EditUserController!{% endblock %}
+{% block title %}Modification profil{% endblock %}
 
 {% block body %}
     <div class="my-4 container">
         <h1>Modification du profil</h1>
+        <img class="img-thumbnail my-3" src="/assets/images/utilisateurs/{{app.user.imageName}}" alt="La photo de profil">
         {{form(form)}}
     </div>
 {% endblock %}

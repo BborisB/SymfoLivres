@@ -15,7 +15,11 @@
                         <h5 class="card-title">{{ livre.titre }}</h5>
                         <p class="card-text">{{livre.resume}}</p>
                         <p class="card-text text-body-secondary">{{livre.auteur}}</p>
-                        <button>Ajouter à la liste</button>
+                        {% if app.user in livre.utilisateurs %}
+                            <a href="{{path('app_wishlist_remove', {'id': livre.id})}}">Retirer de la liste de souhaits.</a>
+                        {% else %}
+                            <a href="{{path('app_wishlist_add', {'id': livre.id})}}">Ajouter à la liste de souhaits.</a>
+                        {% endif %}
                     </div>
                 </div>
             </div>

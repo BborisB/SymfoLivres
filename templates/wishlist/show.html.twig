@@ -1,14 +1,14 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Livre index{% endblock %}
+{% block title %}Liste de souhaits{% endblock %}
 
 {% block stylesheets %}
 {% endblock %}
 
 {% block body %}
     <div class="container my-4">
-        <h1>Livre index</h1>
-        {% for livre in livres %}
+        <h1>Vos livres souhaités</h1>
+        {% for livre in livres | filter(livre=>app.user in livre.utilisateurs) %}
             <a href="{{ path('app_livre_show', {'id': livre.id}) }}" class="img-thumbnail livreCard card mb-3">
                 <div class="row g-0 h-100">
                     <div class="col-md-3 h-100">
@@ -31,7 +31,8 @@
                 </div>
             </a>
         {% else %}
-            <span>Il n'y pas de livre.</span>
+            <span>Votre liste de souhaits est vide.</span>
+            <a class="btn btn-outline-dark" href="{{path('app_livre_index')}}">Voir la liste des livres</a>
         {% endfor %}
     </div>
 {% endblock %}

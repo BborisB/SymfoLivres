@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\LivreRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
@@ -38,6 +40,18 @@ class Livre
 
     #[ORM\Column(type: Types::TEXT)]
     private ?string $resume = null;
+
+    #[ORM\ManyToMany(targetEntity: Utilisateur::class, mappedBy: 'wishlist')]
+    private Collection $utilisateurs;
+
+    #[ORM\ManyToMany(targetEntity: Utilisateur::class, mappedBy: 'locations')]
+    private Collection $locationsUsers;
+
+    public function __construct()
+    {
+        $this->utilisateurs = new ArrayCollection();
+        $this->locationsUsers = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -112,6 +126,33 @@ class Livre
     public function setResume(string $resume): static
     {
         $this->resume = $resume;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Utilisateur>
+     */
+    public function getUtilisateurs(): Collection
+    {
+        return $this->utilisateurs;
+    }
+
+    public function addUtilisateur(Utilisateur $utilisateur): static
+    {
+        if (!$this->utilisateurs->contains($utilisateur)) {
+            $this->utilisateurs->add($utilisateur);
+            $utilisateur->addWishlist($this);
+        }
+
+        return $this;
+    }
+
+    public function removeUtilisateur(Utilisateur $utilisateur): static
+    {
+        if ($this->utilisateurs->removeElement($utilisateur)) {
+            $utilisateur->removeWishlist($this);
+        }
 
         return $this;
     }

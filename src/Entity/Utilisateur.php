@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\UtilisateurRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
@@ -46,7 +48,15 @@ class Utilisateur implements UserInterface, PasswordAuthenticatedUserInterface
     private ?bool $rgpd = null;
 
     #[ORM\Column(length: 255)]
-    private ?string $imageName = null;
+    private ?string $imageName = "pfpUser.jpg";
+
+    #[ORM\ManyToMany(targetEntity: Livre::class, inversedBy: 'utilisateurs')]
+    private Collection $wishlist;
+
+    public function __construct()
+    {
+        $this->wishlist = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -162,6 +172,30 @@ class Utilisateur implements UserInterface, PasswordAuthenticatedUserInterface
     public function setImageName(?string $imageName): static
     {
         $this->imageName = $imageName;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Livre>
+     */
+    public function getWishlist(): Collection
+    {
+        return $this->wishlist;
+    }
+
+    public function addWishlist(Livre $wishlist): static
+    {
+        if (!$this->wishlist->contains($wishlist)) {
+            $this->wishlist->add($wishlist);
+        }
+
+        return $this;
+    }
+
+    public function removeWishlist(Livre $wishlist): static
+    {
+        $this->wishlist->removeElement($wishlist);
 
         return $this;
     }
