@@ -18,9 +18,9 @@ class EditUserController extends AbstractController
     public function index(Request $request, EntityManagerInterface $entityManager, FileUploader $fileUploader, ImageResizeService $imageResizeService): Response
     {
         $currentUser = $this->getUser();
-        assert($currentUser instanceof Utilisateur);
         if($currentUser)
         {
+            assert($currentUser instanceof Utilisateur);
             $form = $this->createForm(EditUserType::class, $currentUser);
             $form->handleRequest($request);
             if($form->isSubmitted()&&$form->isValid())

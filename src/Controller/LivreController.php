@@ -17,16 +17,30 @@ class LivreController extends AbstractController
     #[Route('/', name: 'app_livre_index', methods: ['GET'])]
     public function index(LivreRepository $livreRepository): Response
     {
-        return $this->render('livre/index.html.twig', [
-            'livres' => $livreRepository->findAll(),
-        ]);
+        if($this->getUser())
+        {
+            return $this->render('livre/index.html.twig', [
+                'livres' => $livreRepository->findAll(),
+            ]);
+        }
+        else
+        {
+            return $this->redirectToRoute("app_login");
+        }
     }
 
     #[Route('/{id}', name: 'app_livre_show', methods: ['GET'])]
     public function show(Livre $livre): Response
     {
-        return $this->render('livre/show.html.twig', [
-            'livre' => $livre,
-        ]);
+        if($this->getUser())
+        {
+            return $this->render('livre/show.html.twig', [
+                'livre' => $livre,
+            ]);
+        }
+        else
+        {
+            return $this->redirectToRoute("app_login");
+        }
     }
 }
