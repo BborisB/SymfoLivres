@@ -8,6 +8,7 @@
 {% block body %}
     <div class="container my-4">
         <h1>Livre index</h1>
+        {{form(form)}}
         {% for livre in livres %}
             <a href="{{ path('app_livre_show', {'id': livre.id}) }}" class="img-thumbnail livreCard card mb-3">
                 <div class="row g-0 h-100">

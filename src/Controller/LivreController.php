@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\Livre;
+use App\Form\LivreFiltreType;
 use App\Form\LivreType;
 use App\Repository\LivreRepository;
 use Doctrine\ORM\EntityManagerInterface;
@@ -14,13 +15,21 @@ use Symfony\Component\Routing\Annotation\Route;
 #[Route('/livre')]
 class LivreController extends AbstractController
 {
-    #[Route('/', name: 'app_livre_index', methods: ['GET'])]
-    public function index(LivreRepository $livreRepository): Response
+    #[Route('/', name: 'app_livre_index', methods: ['GET', 'POST'])]
+    public function index(Request $request, LivreRepository $livreRepository): Response
     {
         if($this->getUser())
         {
+            $filtreForm = $this->createForm(LivreFiltreType::class);
+            $filtreForm->handleRequest($request);
+            if($filtreForm->isSubmitted())
+            {
+                $auteur = $filtreForm->get('auteur')->getData();
+                $editeur = $filtreForm->get('editeur')->getData()
+            }
             return $this->render('livre/index.html.twig', [
                 'livres' => $livreRepository->findAll(),
+                'form' => $filtreForm->createView()
             ]);
         }
         else
