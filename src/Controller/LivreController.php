@@ -20,15 +20,14 @@ class LivreController extends AbstractController
     {
         if($this->getUser())
         {
+            $auteur = null;
             $filtreForm = $this->createForm(LivreFiltreType::class);
             $filtreForm->handleRequest($request);
-            if($filtreForm->isSubmitted())
-            {
-                $auteur = $filtreForm->get('auteur')->getData();
-                $editeur = $filtreForm->get('editeur')->getData()
-            }
+            $titre = $filtreForm->get('titre')->getData();
+            $auteur = $filtreForm->get('auteur')->getData();
+            $editeur = $filtreForm->get('editeur')->getData();
             return $this->render('livre/index.html.twig', [
-                'livres' => $livreRepository->findAll(),
+                'livres' => $livreRepository->filtre($titre, $auteur, $editeur),
                 'form' => $filtreForm->createView()
             ]);
         }

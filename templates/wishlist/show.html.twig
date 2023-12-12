@@ -7,7 +7,7 @@
 
 {% block body %}
     <div class="container my-4">
-        <h1>Vos livres souhaités</h1>
+        <h1>Liste des souhaits</h1>
         {% for livre in livres | filter(livre=>app.user in livre.utilisateurs) %}
             <a href="{{ path('app_livre_show', {'id': livre.id}) }}" class="img-thumbnail livreCard card mb-3">
                 <div class="row g-0 h-100">
