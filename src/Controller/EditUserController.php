@@ -15,7 +15,7 @@ use Symfony\Component\Routing\Annotation\Route;
 class EditUserController extends AbstractController
 {
     #[Route('/edit/user', name: 'app_edit_user')]
-    public function index(Request $request, EntityManagerInterface $entityManager, FileUploader $fileUploader, ImageResizeService $imageResizeService): Response
+    public function editUser(Request $request, EntityManagerInterface $entityManager, FileUploader $fileUploader, ImageResizeService $imageResizeService): Response
     {
         $currentUser = $this->getUser();
         if($currentUser)
@@ -37,7 +37,7 @@ class EditUserController extends AbstractController
             }
             else
             {
-                return $this->render('edit_user/index.html.twig', [
+                return $this->render('edit_user/editInfo.html.twig', [
                     'form' => $form->createView(),
                 ]);
             }
@@ -46,7 +46,43 @@ class EditUserController extends AbstractController
         {
             return $this->redirectToRoute("app_login");
         }
-        return $this->render('edit_user/index.html.twig', [
+        return $this->render('edit_user/editInfo.html.twig', [
+            'controller_name' => 'EditUserController',
+        ]);
+    }
+
+    #[Route('/edit/password', name: 'app_edit_password')]
+    public function editPassword(Request $request, EntityManagerInterface $entityManager, FileUploader $fileUploader, ImageResizeService $imageResizeService): Response
+    {
+        $currentUser = $this->getUser();
+        if($currentUser && $currentUser instanceof Utilisateur)
+        {
+            $form = $this->createForm(EditUserType::class, $currentUser);
+            $form->handleRequest($request);
+            if($form->isSubmitted()&&$form->isValid())
+            {
+                $pfp = $form->get('pfp')->getData();
+                if($pfp)
+                {
+                    $fileUploader->remove($currentUser->getImageName());
+                    $currentUser->setImageName($fileUploader->upload($pfp, $imageResizeService));
+                }
+                $entityManager->persist($currentUser);
+                $entityManager->flush();
+                return $this->redirectToRoute("home.index");
+            }
+            else
+            {
+                return $this->render('edit_user/editInfo.html.twig', [
+                    'form' => $form->createView(),
+                ]);
+            }
+        }
+        else
+        {
+            return $this->redirectToRoute("app_login");
+        }
+        return $this->render('edit_user/editInfo.html.twig', [
             'controller_name' => 'EditUserController',
         ]);
     }

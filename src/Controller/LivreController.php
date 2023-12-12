@@ -51,4 +51,12 @@ class LivreController extends AbstractController
             return $this->redirectToRoute("app_login");
         }
     }
+
+    #[Route('/details/{id}', name: 'app_livre_details', methods: ['GET'])]
+    public function details(Livre $livre): Response
+    {
+        return $this->render('partials/_livreModal.html.twig', [
+            'livre' => $livre,
+        ]);
+    }
 }

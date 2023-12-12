@@ -47,6 +47,13 @@ class Livre
     #[ORM\ManyToMany(targetEntity: Utilisateur::class, mappedBy: 'locations')]
     private Collection $locationsUsers;
 
+    #[ORM\OneToOne(mappedBy: 'livre', cascade: ['persist', 'remove'])]
+    private ?Location $location = null;
+
+    #[ORM\ManyToOne(inversedBy: 'livres')]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?Genre $genre = null;
+
     public function __construct()
     {
         $this->utilisateurs = new ArrayCollection();
@@ -153,6 +160,35 @@ class Livre
         if ($this->utilisateurs->removeElement($utilisateur)) {
             $utilisateur->removeWishlist($this);
         }
+
+        return $this;
+    }
+
+    public function getLocation(): ?Location
+    {
+        return $this->location;
+    }
+
+    public function setLocation(Location $location): static
+    {
+        // set the owning side of the relation if necessary
+        if ($location->getLivre() !== $this) {
+            $location->setLivre($this);
+        }
+
+        $this->location = $location;
+
+        return $this;
+    }
+
+    public function getGenre(): ?Genre
+    {
+        return $this->genre;
+    }
+
+    public function setGenre(?Genre $genre): static
+    {
+        $this->genre = $genre;
 
         return $this;
     }

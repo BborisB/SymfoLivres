@@ -16,9 +16,14 @@
                         <p class="card-text">{{livre.resume}}</p>
                         <p class="card-text text-body-secondary">{{livre.auteur}}</p>
                         {% if app.user in livre.utilisateurs %}
-                            <a href="{{path('app_wishlist_remove', {'id': livre.id})}}">Retirer de la liste de souhaits.</a>
+                            <a href="{{path('app_wishlist_remove', {'id': livre.id})}}">Retirer de la liste de souhaits</a>
                         {% else %}
-                            <a href="{{path('app_wishlist_add', {'id': livre.id})}}">Ajouter à la liste de souhaits.</a>
+                            <a href="{{path('app_wishlist_add', {'id': livre.id})}}">Ajouter à la liste de souhaits</a>
+                        {% endif %}
+                        {% if app.user === livre.location %}
+                            <span>Vous loué actuellement ce livre.</span>
+                        {% else %}
+                            <a href="">Louer ce livre</a>
                         {% endif %}
                     </div>
                 </div>

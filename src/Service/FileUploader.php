@@ -36,8 +36,11 @@ class FileUploader
 
     public function remove(string $fileName)
     {
-        $fileSystem = new Filesystem();
-        $fileSystem->remove($this->getTargetDirectory()."/".$fileName); 
+        if($fileName!=="defaultUser.jpg")
+        {
+            $fileSystem = new Filesystem();
+            $fileSystem->remove($this->getTargetDirectory()."/".$fileName);   
+        }
     }
 
     public function getTargetDirectory(): string
