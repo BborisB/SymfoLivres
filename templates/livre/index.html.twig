@@ -6,33 +6,58 @@
 {% endblock %}
 
 {% block body %}
-    <div class="container my-4">
-        <h1>Livre index</h1>
-        {{form(form)}}
-        {% for livre in livres %}
-            <a href="{{ path('app_livre_show', {'id': livre.id}) }}" class="img-thumbnail livreCard card mb-3">
-                <div class="row g-0 h-100">
-                    <div class="col-md-3 h-100">
-                        <img src="/assets/images/livres/{{ livre.imageName }}" class="img-thumbnail livreCouverture w-100 h-100" alt="Couverture du livre">
-                    </div>
-                    <div class="p-3 d-flex flex-column col-md-9">
-                        <div class="card-header">
-                            <h3 class="card-title">{{ livre.titre }}</h3>
-                        </div>
-                        <div class="my-2 card-body">
-                            <p class="card-text">{{livre.resume}}</p>
-                        </div>
-                        <div class="mb-2 card-footer">
-                            <p class="card-text text-body-secondary">{{livre.auteur}}</p>
-                        </div>
-                        {# {% if app.user in livre.utilisateurs %}
-                            <button class="btn btn-primary">Déjà loué</button>
-                        {% endif %} #}
-                    </div>
+<div class="container my-4">
+    <h1>Livre index</h1>
+    <!-- Button trigger modal -->
+    <button type="button" class="btn btn-primary my-4" data-bs-toggle="modal" data-bs-target="#exampleModal">
+        Effectuer une recherche
+    </button>
+
+    <!-- Modal -->
+    <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+            <div class="modal-content">
+                {{form_start(form)}}
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="exampleModalLabel">Modal title</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
-            </a>
-        {% else %}
-            <span>Il n'y pas de livre.</span>
-        {% endfor %}
+                <div class="modal-body">
+                    {{form_widget(form)}}
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button type="submit" class="btn btn-primary" data-bs-dismiss="modal">Rechercher</button>
+                </div>
+                {{form_end(form)}}
+            </div>
+        </div>
     </div>
+    {% for livre in livres %}
+    <a href="{{ path('app_livre_show', {'id': livre.id}) }}" class="img-thumbnail livreCard card mb-3">
+        <div class="row g-0 h-100">
+            <div class="col-md-3 h-100">
+                <img src="/assets/images/livres/{{ livre.imageName }}" class="img-thumbnail livreCouverture w-100 h-100"
+                    alt="Couverture du livre">
+            </div>
+            <div class="p-3 d-flex flex-column col-md-9">
+                <div class="card-header">
+                    <h3 class="card-title">{{ livre.titre }}</h3>
+                </div>
+                <div class="my-2 card-body">
+                    <p class="card-text">{{livre.resume}}</p>
+                </div>
+                <div class="mb-2 card-footer">
+                    <p class="card-text text-body-secondary">{{livre.auteur}}</p>
+                </div>
+                {# {% if app.user in livre.utilisateurs %}
+                <button class="btn btn-primary">Déjà loué</button>
+                {% endif %} #}
+            </div>
+        </div>
+    </a>
+    {% else %}
+    <span>Il n'y pas de livre.</span>
+    {% endfor %}
+</div>
 {% endblock %}

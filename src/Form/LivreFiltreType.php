@@ -33,9 +33,6 @@ class LivreFiltreType extends AbstractType
             'mapped'=>false,
             'placeholder'=>'Tous',
             'class' => Editeur::class
-        ])
-        ->add('submit', SubmitType::class, [
-            'label'=>'Rechercher'
         ]);
     }
 }
