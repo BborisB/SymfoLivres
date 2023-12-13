@@ -26,10 +26,10 @@ class Location
     #[ORM\JoinColumn(nullable: false)]
     private ?Utilisateur $utilisateur = null;
 
-    public function __construct(Livre $livre, Utilisateur $utilisateur)
+    public function __construct()
     {
-        $this->livre = $livre;
-        $this->utilisateur = $utilisateur;
+        // $this->livre = $livre;
+        // $this->utilisateur = $utilisateur;
         $this->dateLocation = date_create("now", new DateTimeZone("Europe/Paris"));
     }
 
@@ -67,7 +67,7 @@ class Location
         return $this->utilisateur;
     }
 
-    public function setUtilisateur(Utilisateur $utilisateur): static
+    public function setUtilisateur(?Utilisateur $utilisateur): static
     {
         $this->utilisateur = $utilisateur;
 

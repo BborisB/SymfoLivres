@@ -53,8 +53,8 @@ class Utilisateur implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\ManyToMany(targetEntity: Livre::class, inversedBy: 'utilisateurs')]
     private Collection $wishlist;
 
-    // #[ORM\OneToOne(mappedBy: 'utilisateur', cascade: ['persist', 'remove'])]
-    // private ?Location $location = null;
+    #[ORM\OneToOne(mappedBy: 'utilisateur', cascade: ['persist', 'remove'])]
+    private ?Location $location = null;
 
     public function __construct()
     {
@@ -203,20 +203,20 @@ class Utilisateur implements UserInterface, PasswordAuthenticatedUserInterface
         return $this;
     }
 
-    // public function getLocation(): ?Location
-    // {
-    //     return $this->location;
-    // }
+    public function getLocation(): ?Location
+    {
+        return $this->location;
+    }
 
-    // public function setLocation(Location $location): static
-    // {
-    //     // set the owning side of the relation if necessary
-    //     if ($location->getUtilisateur() !== $this) {
-    //         $location->setUtilisateur($this);
-    //     }
+    public function setLocation(Location $location): static
+    {
+        // set the owning side of the relation if necessary
+        if ($location->getUtilisateur() !== $this) {
+            $location->setUtilisateur($this);
+        }
 
-    //     $this->location = $location;
+        $this->location = $location;
 
-    //     return $this;
-    // }
+        return $this;
+    }
 }

@@ -44,9 +44,6 @@ class Livre
     #[ORM\ManyToMany(targetEntity: Utilisateur::class, mappedBy: 'wishlist')]
     private Collection $utilisateurs;
 
-    #[ORM\ManyToMany(targetEntity: Utilisateur::class, mappedBy: 'locations')]
-    private Collection $locationsUsers;
-
     #[ORM\OneToOne(mappedBy: 'livre', cascade: ['persist', 'remove'])]
     private ?Location $location = null;
 
@@ -57,7 +54,6 @@ class Livre
     public function __construct()
     {
         $this->utilisateurs = new ArrayCollection();
-        $this->locationsUsers = new ArrayCollection();
     }
 
     public function getId(): ?int

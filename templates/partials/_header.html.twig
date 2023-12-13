@@ -6,7 +6,7 @@
             <span class="navbar-toggler-icon"></span>
         </button>
         <div class="collapse navbar-collapse" id="navbarColor01">
-            <ul class="navbar-nav w-100 align-items-center">
+            <ul class="navbar-nav w-100">
                 {% if app.user %}
                 <li class="nav-item">
                     <a class="nav-link active" href="{{path('home.index')}}">Acceuil</a>
@@ -14,8 +14,11 @@
                 <li class="nav-item">
                     <a class="nav-link" href="{{path('app_livre_index')}}">Livres</a>
                 </li>
-                <li class="nav-item me-auto">
+                <li class="nav-item">
                     <a class="nav-link" href="{{path('app_wishlist_index')}}">Souhaits</a>
+                </li>
+                <li class="nav-item me-auto">
+                    <a class="nav-link" href="{{path('app_location_index')}}">Locations</a>
                 </li>
                 {% if is_granted("ROLE_ADMIN") %}
                     <li class="nav-item">

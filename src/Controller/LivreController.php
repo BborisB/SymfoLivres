@@ -23,11 +23,18 @@ class LivreController extends AbstractController
             $auteur = null;
             $filtreForm = $this->createForm(LivreFiltreType::class);
             $filtreForm->handleRequest($request);
-            $titre = $filtreForm->get('titre')->getData();
-            $auteur = $filtreForm->get('auteur')->getData();
-            $editeur = $filtreForm->get('editeur')->getData();
+            if($filtreForm->isSubmitted() && $filtreForm->isValid() && $this->isCsrfTokenValid('filtre-token', $request->request->get('filtre-token')))
+            {
+                $titre = $filtreForm->get('titre')->getData();
+                $auteur = $filtreForm->get('auteur')->getData();
+                $editeur = $filtreForm->get('editeur')->getData();
+                return $this->render('livre/index.html.twig', [
+                    'livres' => $livreRepository->filtre($titre, $auteur, $editeur),
+                    'form' => $filtreForm->createView()
+                ]);
+            }
             return $this->render('livre/index.html.twig', [
-                'livres' => $livreRepository->filtre($titre, $auteur, $editeur),
+                'livres' => $livreRepository->findAll(),
                 'form' => $filtreForm->createView()
             ]);
         }

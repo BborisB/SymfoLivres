@@ -23,7 +23,9 @@ class LocationController extends AbstractController
             $currentUser = $this->getUser();
             if ($currentUser && $currentUser instanceof Utilisateur)
             {
-                $location = new Location($livre, $currentUser);
+                $location = new Location();
+                $location->setLivre($livre);
+                $location->setUtilisateur($currentUser);
                 $entityManagerInterface->persist($location);
                 $entityManagerInterface->flush();
             }
@@ -31,7 +33,7 @@ class LocationController extends AbstractController
             {
                 return $this->redirectToRoute("app_login");
             }
-            return $this->redirectToRoute("app_location_index");
+            return $this->redirectToRoute("app_livre_show", ['id'=>$livre->getId()]);
         }
         else
         {
@@ -45,7 +47,9 @@ class LocationController extends AbstractController
         $currentUser = $this->getUser();
         if ($currentUser && $currentUser instanceof Utilisateur)
         {
+            $location->setUtilisateur(null);
             $entityManagerInterface->remove($location);
+            $entityManagerInterface->flush();
         }
         else
         {
@@ -57,8 +61,16 @@ class LocationController extends AbstractController
     #[Route("/", "app_location_index", methods: ["get"])]
     public function show(LocationRepository $locationRepository): Response
     {
-        return $this->render("location/show.html.twig", [
-            'locations' => $locationRepository->findAll()
-        ]);
+        $currentUser = $this->getUser();
+        if($currentUser && $currentUser instanceof Utilisateur)
+        {
+            return $this->render("location/show.html.twig", [
+                'locations' => $locationRepository->findBy(['utilisateur' => $currentUser])
+            ]);
+        }
+        else
+        {
+            return $this->redirectToRoute("app_login");
+        }
     }
 }

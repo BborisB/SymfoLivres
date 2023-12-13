@@ -24,12 +24,16 @@
                 </div>
                 <div class="modal-body">
                     {{form_widget(form)}}
+                    <input type="hidden" name="filtre-token" value="{{ csrf_token('filtre-token') }}">
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fermer</button>
                     <button type="submit" class="btn btn-primary">Rechercher</button>
                 </div>
                 {{form_end(form)}}
+                {# <div class="modal-body">
+                    {{form(form)}}
+                </div> #}
             </div>
         </div>
     </div>

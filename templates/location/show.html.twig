@@ -1,0 +1,29 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Livre{% endblock %}
+
+{% block body %}
+    <div class="mx-5 my-5 d-flex flex-column h-100">
+        <h1>Vos locations en cours</h1>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Livre</th>
+                    <th colspan="2">Loué le</th>
+                </tr>
+            </thead>
+            <tbody>
+            {% for location in locations %}
+                <tr>
+                    <td><a href="{{path('app_livre_show', {'id':location.livre.id})}}">{{location.livre.titre}}</a></td>
+                    <td>{{location.dateLocation|date('d-m-Y H:i:s')}}</td>
+                    <td><a class="btn btn-outline-primary" href="{{path('app_location_remove', {'id':location.id})}}">Rendre</a></td>
+                </tr>
+            {% else %}
+            <tr><td colspan="3">Vous ne louez aucun livre actuellement.</td></tr>
+            {% endfor %}
+            </tbody>
+        </table>
+        <a class="btn btn-secondary" href="{{ path('app_livre_index') }}">Retour à la liste des livres</a>
+    </div>
+{% endblock %}
