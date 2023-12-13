@@ -2,12 +2,10 @@
 
 namespace App\Form;
 
-use App\Entity\Utilisateur;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\FormBuilderInterface;
-use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Validator\Constraints as Assert;
 
 class EditUserType extends AbstractType
@@ -26,14 +24,8 @@ class EditUserType extends AbstractType
                 new Assert\Image(mimeTypesMessage:"Choisissez une image valide.", maxSize:"1024k", maxSizeMessage:"Votre image est trop lourde.")
             ],
         ])
-        ->add('submit', SubmitType::class)
-        ;
-    }
-
-    public function configureOptions(OptionsResolver $resolver): void
-    {
-        $resolver->setDefaults([
-            'data_class' => Utilisateur::class,
+        ->add('submit', SubmitType::class, [
+            'label'=>'Enregistrer'
         ]);
     }
 }

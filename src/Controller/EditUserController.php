@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\Utilisateur;
+use App\Form\EditPasswordType;
 use App\Form\EditUserType;
 use App\Service\FileUploader;
 use App\Service\ImageResizeService;
@@ -10,6 +11,7 @@ use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\Routing\Annotation\Route;
 
 class EditUserController extends AbstractController
@@ -18,72 +20,63 @@ class EditUserController extends AbstractController
     public function editUser(Request $request, EntityManagerInterface $entityManager, FileUploader $fileUploader, ImageResizeService $imageResizeService): Response
     {
         $currentUser = $this->getUser();
-        if($currentUser)
+        if($currentUser && $currentUser instanceof Utilisateur)
         {
-            assert($currentUser instanceof Utilisateur);
-            $form = $this->createForm(EditUserType::class, $currentUser);
+            $form = $this->createForm(EditUserType::class);
             $form->handleRequest($request);
-            if($form->isSubmitted()&&$form->isValid())
+            if($form->isSubmitted() && $form->isValid())
             {
                 $pfp = $form->get('pfp')->getData();
                 if($pfp)
                 {
                     $fileUploader->remove($currentUser->getImageName());
                     $currentUser->setImageName($fileUploader->upload($pfp, $imageResizeService));
+                    $entityManager->flush();
+                    $this->addFlash('success', 'Les modifications ont été enregistrées.');
                 }
-                $entityManager->persist($currentUser);
-                $entityManager->flush();
-                return $this->redirectToRoute("home.index");
+                else
+                {
+                    $this->addFlash('error', 'Une erreur est survenue.');
+                }
             }
-            else
-            {
-                return $this->render('edit_user/editInfo.html.twig', [
-                    'form' => $form->createView(),
-                ]);
-            }
+            return $this->render('edit_user/editInfo.html.twig', [
+                'form' => $form->createView(),
+            ]);
         }
         else
         {
             return $this->redirectToRoute("app_login");
         }
-        return $this->render('edit_user/editInfo.html.twig', [
-            'controller_name' => 'EditUserController',
-        ]);
     }
 
     #[Route('/edit/password', name: 'app_edit_password')]
-    public function editPassword(Request $request, EntityManagerInterface $entityManager, FileUploader $fileUploader, ImageResizeService $imageResizeService): Response
+    public function editPassword(Request $request, UserPasswordHasherInterface $hasher, EntityManagerInterface $entityManager): Response
     {
         $currentUser = $this->getUser();
         if($currentUser && $currentUser instanceof Utilisateur)
         {
-            $form = $this->createForm(EditUserType::class, $currentUser);
+            $form = $this->createForm(EditPasswordType::class);
             $form->handleRequest($request);
-            if($form->isSubmitted()&&$form->isValid())
+            if($form->isSubmitted() && $form->isValid())
             {
-                $pfp = $form->get('pfp')->getData();
-                if($pfp)
+                if($hasher->isPasswordValid($currentUser, $form->get('plainPassword')->getData()))
                 {
-                    $fileUploader->remove($currentUser->getImageName());
-                    $currentUser->setImageName($fileUploader->upload($pfp, $imageResizeService));
+                    $currentUser->setPassword($hasher->hashPassword($currentUser, $form->get('newPassword')->getData()));
+                    $entityManager->flush();
+                    $this->addFlash("success", "Le mot de passe a été enregistré.");
                 }
-                $entityManager->persist($currentUser);
-                $entityManager->flush();
-                return $this->redirectToRoute("home.index");
+                else
+                {
+                    $this->addFlash("error", "Le mot de passe est incorrect.");
+                }
             }
-            else
-            {
-                return $this->render('edit_user/editInfo.html.twig', [
-                    'form' => $form->createView(),
-                ]);
-            }
+            return $this->render('edit_user/editPassword.html.twig', [
+                'form' => $form->createView(),
+            ]);
         }
         else
         {
             return $this->redirectToRoute("app_login");
         }
-        return $this->render('edit_user/editInfo.html.twig', [
-            'controller_name' => 'EditUserController',
-        ]);
     }
 }
