@@ -33,12 +33,9 @@ class LocationController extends AbstractController
             {
                 return $this->redirectToRoute("app_login");
             }
-            return $this->redirectToRoute("app_livre_show", ['id'=>$livre->getId()]);
+            
         }
-        else
-        {
-            return new Response("");
-        }
+        return $this->redirectToRoute("app_livre_show", ['id' => $livre->getId()]);
     }
 
     #[Route("/remove/{id}", "app_location_remove", methods: ["get"])]
