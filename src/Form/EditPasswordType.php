@@ -17,6 +17,7 @@ class EditPasswordType extends AbstractType
         $builder
         ->add('plainPassword', PasswordType::class, [
             'mapped'=>false,
+            'label'=>'Mot de passe actuel'
         ])
         ->add('newPassword', RepeatedType::class, [
             'type'=>PasswordType::class,
