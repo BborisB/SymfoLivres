@@ -3,14 +3,15 @@
 namespace App\Controller;
 
 use App\Entity\Livre;
-use App\Form\LivreFiltreType;
 use App\Form\LivreType;
+use App\Form\LivreFiltreType;
+use Symfony\UX\Turbo\TurboBundle;
 use App\Repository\LivreRepository;
 use Doctrine\ORM\EntityManagerInterface;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 #[Route('/livre')]
 class LivreController extends AbstractController
@@ -23,23 +24,30 @@ class LivreController extends AbstractController
             $auteur = null;
             $filtreForm = $this->createForm(LivreFiltreType::class);
             $filtreForm->handleRequest($request);
-            if($filtreForm->isSubmitted() && $filtreForm->isValid() && $this->isCsrfTokenValid('filtre-token', $request->request->get('filtre-token')))
+            if($filtreForm->isSubmitted() && $filtreForm->isValid())
             {
                 $titre = $filtreForm->get('titre')->getData();
                 $auteur = $filtreForm->get('auteur')->getData();
                 $editeur = $filtreForm->get('editeur')->getData();
+                if (TurboBundle::STREAM_FORMAT === $request->getPreferredFormat())
+                {
+                    // If the request comes from Turbo, set the content type as text/vnd.turbo-stream.html and only send the HTML to update
+                    $request->setRequestFormat(TurboBundle::STREAM_FORMAT);
+                    return $this->render('partials/turboStreams/_livres.html.twig', ['livres' => $livreRepository->filtre($titre, $auteur, $editeur)]);
+                }
                 return $this->render('livre/index.html.twig', [
                     'livres' => $livreRepository->filtre($titre, $auteur, $editeur),
-                    'form' => $filtreForm->createView()
+                    'form' => $filtreForm
                 ]);
             }
             return $this->render('livre/index.html.twig', [
                 'livres' => $livreRepository->findAll(),
-                'form' => $filtreForm->createView()
+                'form' => $filtreForm
             ]);
         }
         else
         {
+            $this->addFlash('error', 'Vous devez être connecté.');
             return $this->redirectToRoute("app_login");
         }
     }

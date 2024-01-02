@@ -32,15 +32,11 @@ class EditUserController extends AbstractController
                     $fileUploader->remove($currentUser->getImageName());
                     $currentUser->setImageName($fileUploader->upload($pfp, $imageResizeService));
                     $entityManager->flush();
-                    $this->addFlash('success', 'Les modifications ont été enregistrées.');
                 }
-                else
-                {
-                    $this->addFlash('error', 'Une erreur est survenue.');
-                }
+                $this->addFlash('success', 'Les modifications ont été enregistrées.');
             }
             return $this->render('edit_user/editInfo.html.twig', [
-                'form' => $form->createView(),
+                'form' => $form
             ]);
         }
         else
@@ -59,7 +55,7 @@ class EditUserController extends AbstractController
             $form->handleRequest($request);
             if($form->isSubmitted() && $form->isValid())
             {
-                if($hasher->isPasswordValid($currentUser, $form->get('plainPassword')->getData()))
+                if($hasher->isPasswordValid($currentUser, $form->get('plainPassword')->getData() ?? ""))
                 {
                     $currentUser->setPassword($hasher->hashPassword($currentUser, $form->get('newPassword')->getData()));
                     $entityManager->flush();
@@ -71,7 +67,7 @@ class EditUserController extends AbstractController
                 }
             }
             return $this->render('edit_user/editPassword.html.twig', [
-                'form' => $form->createView(),
+                'form' => $form,
             ]);
         }
         else

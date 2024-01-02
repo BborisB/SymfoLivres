@@ -14,82 +14,64 @@
     </button>
 
     <!-- Modal -->
-    <div class="modal fade" id="filtreModal" tabindex="-1" aria-labelledby="filtreModalLabel" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
-            <div class="modal-content">
-                {{form_start(form)}}
-                <div class="modal-header">
-                    <h1 class="modal-title fs-5" id="filtreModalLabel">Effectuer une recherche</h1>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                    {{form_widget(form)}}
-                    <input type="hidden" name="filtre-token" value="{{ csrf_token('filtre-token') }}">
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fermer</button>
-                    <button type="submit" class="btn btn-primary">Rechercher</button>
-                </div>
-                {{form_end(form)}}
-                {# <div class="modal-body">
-                    {{form(form)}}
-                </div> #}
-            </div>
-        </div>
-    </div>
+   {{ include('partials/_formModal.html.twig', {'id':'filtreModal', 'formTitle': 'Rechercher', 'submitLabel':'Rechercher'}) }}
 
-    <!-- Livre Modal -->
+    {# <!-- Livre Modal -->
     <div class="modal fade" id="livreModal" tabindex="-1" aria-labelledby="livreModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
             <div class="modal-content" id="livreModalContent">
 
             </div>
         </div>
-    </div>
-
-    {% for livre in livres %}
-    {# <div class="livreCard card mb-3">
-        <div class="row g-0 h-100">
-            <div class="col-md-3 h-100">
-                <img src="/assets/images/livres/{{ livre.imageName }}" class="img-thumbnail livreCouverture w-100 h-100"
-                    alt="Couverture du livre">
-            </div>
-            <div class="h-100 overflow-auto p-3 d-flex flex-column col-md-9">
-                <div class="card-header">
-                    <h3 class="card-title">{{ livre.titre }}</h3>
-                </div>
-                <div class="my-2 card-body">
-                    <p class="card-text">{{livre.resume}}</p>
-                </div>
-                <div class="mb-2 card-footer">
-                    <p class="card-text text-body-secondary">{{livre.auteur}}</p>
-                </div>
-                <button value="{{path('app_livre_details', {'id':livre.id})}}" class="showLivre btn btn-primary" data-bs-toggle="modal" data-bs-target="#livreModal">Voir détails</button>
-            </div>
-        </div>
     </div> #}
-    <a href="{{ path('app_livre_show', {'id': livre.id}) }}" class="livreCard card mb-3">
-        <div class="row g-0 h-100">
-            <div class="col-md-3 h-100">
-                <img src="/assets/images/livres/{{ livre.imageName }}" class="img-thumbnail livreCouverture w-100 h-100"
-                    alt="Couverture du livre">
+
+    <div id="livres">
+        {% for livre in livres %}
+        {# <div class="livreCard card mb-3">
+            <div class="row g-0 h-100">
+                <div class="col-md-3 h-100">
+                    <img src="/assets/images/livres/{{ livre.imageName }}" class="img-thumbnail livreCouverture w-100 h-100"
+                        alt="Couverture du livre">
+                </div>
+                <div class="h-100 overflow-auto p-3 d-flex flex-column col-md-9">
+                    <div class="card-header">
+                        <h3 class="card-title">{{ livre.titre }}</h3>
+                    </div>
+                    <div class="my-2 card-body">
+                        <p class="card-text">{{livre.resume}}</p>
+                    </div>
+                    <div class="mb-2 card-footer">
+                        <p class="card-text text-body-secondary">{{livre.auteur}}</p>
+                    </div>
+                    <button value="{{path('app_livre_details', {'id':livre.id})}}" class="showLivre btn btn-primary"
+                        data-bs-toggle="modal" data-bs-target="#livreModal">Voir détails</button>
+                </div>
             </div>
-            <div class="h-100 overflow-auto p-3 d-flex flex-column col-md-9">
-                <div class="card-header">
-                    <h3 class="card-title">{{ livre.titre }}</h3>
+        </div> #}
+        <a href="{{ path('app_livre_show', {'id': livre.id}) }}" class="livreCard card mb-3">
+            <div class="row g-0 h-100">
+                <div class="col-md-3 h-100">
+                    <img src="/assets/images/livres/{{ livre.imageName }}" class="img-thumbnail livreCouverture w-100 h-100"
+                        alt="Couverture du livre">
                 </div>
-                <div class="my-2 card-body">
-                    <p class="card-text">{{livre.resume}}</p>
-                </div>
-                <div class="mb-2 card-footer">
-                    <p class="card-text text-body-secondary">{{livre.auteur}}</p>
+                <div class="h-100 overflow-auto p-3 d-flex flex-column col-md-9">
+                    <div class="card-header">
+                        <h3 class="card-title">{{ livre.titre }}</h3>
+                    </div>
+                    <div class="my-2 card-body">
+                        <p class="card-text">{{livre.resume}}</p>
+                    </div>
+                    <div class="mb-2 card-footer">
+                        <p class="card-text text-body-secondary">{{livre.auteur}}</p>
+                    </div>
                 </div>
             </div>
-        </div>
-    </a>
-    {% else %}
-    <br>
-    <span>Il n'y pas de livre.</span>
-    {% endfor %}
+        </a>
+        {% else %}
+        <br>
+        <span>Il n'y pas de livre.</span>
+        {% endfor %}
+    </div>
+    
 </div>
 {% endblock %}

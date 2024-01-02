@@ -4,6 +4,7 @@
 
 {% block body %}
     <div class="container my-4">
+        {{ include('partials/_flashes.html.twig') }}
         {% for flash_error in app.flashes('verify_email_error') %}
             <div class="alert alert-danger" role="alert">{{ flash_error }}</div>
         {% endfor %}
@@ -13,8 +14,9 @@
 
         <h1>Register</h1>
 
-        {{ form_errors(registrationForm) }}
+        {{ form_errors(form) }}
 
-        {{form(registrationForm)}}
+        {# {{form(registrationForm)}} #}
+       {{ include('partials/_form.html.twig', {'button_label':"S'enregistrer"}) }}
     </div>
 {% endblock %}

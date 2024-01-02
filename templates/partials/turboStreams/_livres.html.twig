@@ -1,0 +1,28 @@
+<turbo-stream action="update" target="livres">
+    <template>
+        {% for livre in livres %}
+        <a href="{{ path('app_livre_show', {'id': livre.id}) }}" class="livreCard card mb-3">
+            <div class="row g-0 h-100">
+                <div class="col-md-3 h-100">
+                    <img src="/assets/images/livres/{{ livre.imageName }}" class="img-thumbnail livreCouverture w-100 h-100"
+                        alt="Couverture du livre">
+                </div>
+                <div class="h-100 overflow-auto p-3 d-flex flex-column col-md-9">
+                    <div class="card-header">
+                        <h3 class="card-title">{{ livre.titre }}</h3>
+                    </div>
+                    <div class="my-2 card-body">
+                        <p class="card-text">{{livre.resume}}</p>
+                    </div>
+                    <div class="mb-2 card-footer">
+                        <p class="card-text text-body-secondary">{{livre.auteur}}</p>
+                    </div>
+                </div>
+            </div>
+        </a>
+        {% else %}
+        <br>
+        <span>Il n'y pas de livre.</span>
+        {% endfor %}
+    </template>
+</turbo-stream>
